@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />
         <Route path="/topics" component={Topics} />
+        <Route path="/state" component={State} />
       </div>
     </Router>
   );
@@ -140,6 +142,61 @@ function Topics({ match }) {
   );
 }
 
+class State extends React.Component {
+   constructor() {
+      super();
+		
+      this.state = {
+         data: []
+      }
+	
+      this.setStateHandler = this.setStateHandler.bind(this);
+      this.findDomNodeHandler = this.findDomNodeHandler.bind(this);
+   };
+   setStateHandler() {
+      var item = "setState..."
+      var myArray = this.state.data.slice();
+	  myArray.push(item);
+      this.setState({data: myArray})
+   };
+   findDomNodeHandler() {
+      var myDiv = document.getElementById('myDiv');
+      ReactDOM.findDOMNode(myDiv).classList.toggle('green');
+   }
+   componentWillMount() {
+      console.log('Component WILL MOUNT!')
+   }
+   componentDidMount() {
+      console.log('Component DID MOUNT!')
+   }
+   componentWillReceiveProps(newProps) {    
+      console.log('Component WILL RECIEVE PROPS!')
+   }
+   shouldComponentUpdate(newProps, newState) {
+      return true;
+   }
+   componentWillUpdate(nextProps, nextState) {
+      console.log('Component WILL UPDATE!');
+   }
+   componentDidUpdate(prevProps, prevState) {
+      console.log('Component DID UPDATE!')
+   }
+   componentWillUnmount() {
+      console.log('Component WILL UNMOUNT!')
+   }
+   render() {
+      return (
+         <div>
+            <button onClick = {this.setStateHandler}>SET STATE</button>
+            <h4>State Array: {this.state.data}</h4>
+            <button onClick = {this.findDomNodeHandler}>FIND DOME NODE</button>
+            <div id = "myDiv">NODE</div>
+            <h3>{this.props.myNumber}</h3>
+         </div>
+      );
+   }
+}
+
 class Header extends React.Component {
    render() {
    return (
@@ -152,6 +209,9 @@ class Header extends React.Component {
       </li>
       <li>
         <Link to="/topics">Topics</Link>
+      </li>
+      <li>
+        <Link to="/state">State</Link>
       </li>
     </ul>
   );
